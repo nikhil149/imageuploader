@@ -9,6 +9,7 @@ const Uploader = () => {
   const [imageFile, setImageFile] = useState("");
   const [imageDropped, setImageDropped] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   const imageUploadHandler = useCallback(() => {
     const imageType = /image.*/;
@@ -19,10 +20,17 @@ const Uploader = () => {
     let fileReader = new FileReader();
     fileReader.onload = () => {
       let fileURL = fileReader.result;
+      setUploadingImage(true);
       axios
         .post(`${backendURL}/image/upload`, { image: fileURL })
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+        .then(({ data }) => {
+          console.log(data.image);
+          setUploadingImage(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setUploadingImage(false);
+        });
       setImageSrc(fileURL);
       setImageDropped(true);
     };
@@ -56,7 +64,7 @@ const Uploader = () => {
 
   return (
     <div className={classes.uploader}>
-      <h1>Upload Your Image</h1>
+      <h1>{!uploadingImage ? "Upload Your Image" : "Uploading"}</h1>
       <h6>File should be jpeg,png,..</h6>
       <form
         className={classes.inputDiv}
