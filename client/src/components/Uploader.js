@@ -9,30 +9,26 @@ const Uploader = () => {
 
   const imageUploadHandler = useCallback(() => {
     const imageType = /image.*/;
-    if (imageFile) {
-      if (!imageFile.type.match(imageType)) {
-        alert("Sorry, only images are allowed");
-        return;
-      }
-      let fileReader = new FileReader();
-      fileReader.onload = () => {
-        let fileURL = fileReader.result;
-        setImageSrc(fileURL);
-        setImageDropped(true);
-      };
-      fileReader.readAsDataURL(imageFile);
+    if (!imageFile.type.match(imageType)) {
+      alert("Sorry, only images are allowed");
+      return;
     }
+    let fileReader = new FileReader();
+    fileReader.onload = () => {
+      let fileURL = fileReader.result;
+      setImageSrc(fileURL);
+      setImageDropped(true);
+    };
+    fileReader.readAsDataURL(imageFile);
   }, [imageFile]);
 
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("DRAG LEAVE");
   };
   const handleDragIn = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("DRAG oVER");
   };
   const handleDrop = (e) => {
     e.preventDefault();
@@ -62,14 +58,15 @@ const Uploader = () => {
         onDragLeave={handleDrag}
         onSubmit={(e) => e.preventDefault()}
       >
+        <input
+          type="file"
+          placeholder="Drag and drop your Image here"
+          ref={fileInputRef}
+          onChange={imageInputHandler}
+          hidden={true}
+        />
         {!imageDropped ? (
           <>
-            <input
-              type="file"
-              placeholder="Drag and drop your Image here"
-              ref={fileInputRef}
-              onChange={imageInputHandler}
-            />
             <div className={classes.image}>image</div>
             <label>Drag & Drop your image here</label>
           </>
