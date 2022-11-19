@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import axios from "axios";
 import classes from "./Uploader.module.css";
+
+const backendURL = "http://localhost:4000";
 
 const Uploader = () => {
   const fileInputRef = useRef();
@@ -16,6 +19,10 @@ const Uploader = () => {
     let fileReader = new FileReader();
     fileReader.onload = () => {
       let fileURL = fileReader.result;
+      axios
+        .post(`${backendURL}/image/upload`, { image: fileURL })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
       setImageSrc(fileURL);
       setImageDropped(true);
     };

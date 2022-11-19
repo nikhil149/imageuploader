@@ -8,14 +8,14 @@ const imageRouter = require("./routes/imageRouter");
 
 const app = express();
 
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 // parse application/json
-app.use(bodyParser.json());
-app.use(cors());
+app.use(bodyParser.json({ limit: "50mb" }));
 
-app.use("/image",imageRouter)
+app.use("/image", imageRouter);
 
 mongoose.connect(process.env.DATABASE, {}).then(() => {
   console.log("DB Connected");
