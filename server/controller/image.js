@@ -5,7 +5,7 @@ exports.uploadController = (req, res, next) => {
     const imageModel = new Image({ image: image });
     imageModel
       .save()
-      .then(() => res.json({ msg: req.body.image }))
+      .then((imageDetails) => res.json({ msg: req.body.image, image: imageDetails }))
       .catch(() => res.json({ err: "Failed to save Image" }));
   }
 };
