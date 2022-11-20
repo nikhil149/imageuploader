@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import classes from "./Uploader.module.css";
 
@@ -65,20 +67,28 @@ const Uploader = () => {
     }
   }, [imageFile, imageUploadHandler]);
 
-  const copyTextHandler = e=>{
+  const copyTextHandler = (e) => {
     textRef.current.select();
-    document.execCommand('copy');
+    document.execCommand("copy");
     // This is just personal preference.
     // I prefer to not show the whole text area selected.
     e.target.focus();
     // setCopySuccess('Copied!');
-
-  }
+  };
 
   return (
     <div className={classes.uploader}>
-      <h1>{!uploadingImage ? "Upload Your Image" : "Uploading"}</h1>
-      <h6>File should be jpeg,png,..</h6>
+      {imageSrc ? (
+        <>
+          <FontAwesomeIcon icon={faCircleCheck} color="#219653" fontSize={35}/>
+          <h1>Uploaded Successfully!</h1>
+        </>
+      ) : (
+        <>
+          <h1>{!uploadingImage ? "Upload Your Image" : "Uploading"}</h1>
+          <h6>File should be jpeg,png,..</h6>
+        </>
+      )}
       <form
         className={classes.inputDiv}
         onDrop={handleDrop}
@@ -111,7 +121,13 @@ const Uploader = () => {
         </>
       ) : (
         <footer>
-          <input ref={textRef} value={imageUrl} type="text" className={classes.textInput} readOnly/>
+          <input
+            ref={textRef}
+            value={imageUrl}
+            type="text"
+            className={classes.textInput}
+            readOnly
+          />
           <button onClick={copyTextHandler}>Copy Link</button>
         </footer>
       )}
