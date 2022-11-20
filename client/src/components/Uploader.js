@@ -10,6 +10,8 @@ const Uploader = () => {
   const [imageDropped, setImageDropped] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
   const [uploadingImage, setUploadingImage] = useState(false);
+  const textRef = useRef(null);
+  const [imageUrl, setImageUrl] = useState("");
 
   const imageUploadHandler = useCallback(() => {
     const imageType = /image.*/;
@@ -24,7 +26,8 @@ const Uploader = () => {
       axios
         .post(`${backendURL}/image/upload`, { image: fileURL })
         .then(({ data }) => {
-          console.log(data.image);
+          console.log(data.image._id);
+          setImageUrl(`${backendURL}/image/details/${data.image._id}`);
           setUploadingImage(false);
         })
         .catch((err) => {
@@ -62,6 +65,16 @@ const Uploader = () => {
     }
   }, [imageFile, imageUploadHandler]);
 
+  const copyTextHandler = e=>{
+    textRef.current.select();
+    document.execCommand('copy');
+    // This is just personal preference.
+    // I prefer to not show the whole text area selected.
+    e.target.focus();
+    // setCopySuccess('Copied!');
+
+  }
+
   return (
     <div className={classes.uploader}>
       <h1>{!uploadingImage ? "Upload Your Image" : "Uploading"}</h1>
@@ -89,8 +102,19 @@ const Uploader = () => {
           <img src={imageSrc} alt="" />
         )}
       </form>
-      <span>or</span>
-      <button onClick={() => fileInputRef.current.click()}>Choose File</button>
+      {!imageUrl ? (
+        <>
+          <span>or</span>
+          <button onClick={() => fileInputRef.current.click()}>
+            Choose File
+          </button>
+        </>
+      ) : (
+        <footer>
+          <input ref={textRef} value={imageUrl} type="text" className={classes.textInput} readOnly/>
+          <button onClick={copyTextHandler}>Copy Link</button>
+        </footer>
+      )}
     </div>
   );
 };

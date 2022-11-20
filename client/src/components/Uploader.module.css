@@ -88,10 +88,10 @@
 }
 
 .inputDiv img {
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-    border-radius: 5px;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  border-radius: 5px;
 }
 
 .image {
@@ -99,7 +99,7 @@
   height: 150px;
   background-color: #bdbdbd;
 }
-.uploader input {
+.inputDiv input {
   display: none;
 }
 
@@ -115,4 +115,22 @@
   /* Gray 4 */
 
   color: #bdbdbd;
+}
+.textInput {
+  display: flex;
+  border: none;
+  outline: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: transparent;
+}
+
+.uploader footer {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  display: flex;
+  /* align-self: stretch; */
+  justify-content: space-between;
+  width: 340px;
+  background: #F6F8FB;
 }
